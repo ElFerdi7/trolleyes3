@@ -106,6 +106,29 @@
                                         <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.pattern">El campo no tiene formato adecuado: Introduzca {{f.RegexHelp}}</span>
                                     </div>
                                 </div>
+                                <!-- decimal ------------------------------------------------>
+                                <div ng-if="f.Type == 'Decimal'" class="form-group" id="{{f.Name}}-group"
+                                     ng-class="{'has-error':(outerForm[f.Name].$error.pattern && !outerForm[f.Name].$pristine) ||
+                                                             (outerForm[f.Name].$error.required && !outerForm[f.Name].$pristine)}">
+                                    <label class="control-label col-sm-2" for="{{f.Name}}">
+                                        <span ng-if="f.Required">*</span>
+                                        {{f.LongName}}
+                                    </label>
+                                    <div class="control col-md-{{f.Wide}}">
+                                        <input type="text"
+                                               class="form-control"
+                                               id="{{f.Name}}"
+                                               name="{{f.Name}}"
+                                               ng-model="bean[f.Name]"
+                                               ng-pattern="f.RegexPattern"
+                                               placeholder="{{f.Description}}"
+                                               maxlength="9"
+                                               ng-required="f.IsRequired"
+                                               />
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.required">El campo es obligatorio</span>
+                                        <span class="help-block" ng-if="!outerForm[f.Name].$pristine && outerForm[f.Name].$error.pattern">El campo no tiene formato adecuado: Introduzca {{f.RegexHelp}}</span>
+                                    </div>
+                                </div>
                                 <!-- date ------------------------------------------------>
                                 <div ng-if="f.Type == 'Date'" class="form-group" id="{{f.Name}}-group"
                                      ng-class="{'has-error': (outerForm[f.Name].$error.required || outerForm[f.Name].$error.valid) && !outerForm[f.Name].$pristine}">
