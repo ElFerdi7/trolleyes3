@@ -15,14 +15,22 @@ moduloDirectivas.component('foreignKey', {
 function foreignkeyController1(toolService, serverCallService, $uibModal) {
     var self = this;
     //-----
+    var validity = function (isValid) {
+        if (self.form[self.name]) {
+            self.form[self.name].$setValidity('exists', isValid);
+        }
+    };
+    //-----
     self.chooseOne = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'js/app/' + self.reference + '/' + self.profile + '/selection.html',
+            //templateUrl: 'js/app/' + self.reference + '/' + self.profile + '/selection.html',
+            templateUrl: 'js/system/shared/app/selection.html',
             controller: toolService.capitalizeWord(self.reference) + "Selection" + self.profile + "Controller",
             size: 'lg'
         }).result.then(function (modalResult) {
             self.bean.id = modalResult;
             self.change_value();
+            self.form.$dirty = true;
         });
     };
     //-----
@@ -31,16 +39,19 @@ function foreignkeyController1(toolService, serverCallService, $uibModal) {
         if (old_id) {
             serverCallService.getOne(self.reference, old_id).then(function (response) {
                 self.bean = response.data.json.data;
+                self.metao = response.data.json.metaObject;
+                self.metap = response.data.json.metaProperties;
                 if (self.bean) {
                     if (response.data.json.data.id > 0) {
                         validity(true);
-                        self.desc = "";
-                        response.data.json.metaProperties.forEach(function (arrayItem) {
-                            if (arrayItem.IsForeignKeyDescriptor) {
-                                self.desc += self.bean[arrayItem.Name] + " ";
+                        var arrayLength = self.metap.length;
+                        var description = "";
+                        for (var i = 0; i < arrayLength; i++) {
+                            if (self.metap[i].IsForeignKeyDescriptor) {
+                                description += self.bean[self.metap[i].Name] + " ";
                             }
-                        })
-                        self.desc = self.desc.trim();
+                        }
+                        self.desc = description.trim();
                     } else {
                         validity(false);
                         self.desc = "";
@@ -56,12 +67,6 @@ function foreignkeyController1(toolService, serverCallService, $uibModal) {
         } else {
             validity(false);
             self.desc = "";
-        }
-    };
-    //-----
-    var validity = function (isValid) {
-        if (self.form[self.name]) {
-            self.form[self.name].$setValidity('exists', isValid);
         }
     };
     //-----

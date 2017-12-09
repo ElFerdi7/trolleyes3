@@ -27,19 +27,20 @@
  */
 'use strict';
 moduloTipousuario.controller('TipousuarioView1Controller',
-        ['$scope', '$routeParams', 'serverCallService', '$location', 'sessionService', 'constantService', 'objectService',
-            function ($scope, $routeParams, serverCallService, $location, sessionService, constantService, objectService) {
+        ['$scope', '$routeParams', 'serverCallService', '$location', 'sessionService', 'constantService',
+            function ($scope, $routeParams, serverCallService, $location, sessionService, constantService) {
                 $scope.ob = "tipousuario";
                 $scope.op = "view";
                 $scope.profile = 1;
-                //---
-                $scope.status = null;
-                $scope.debugging = constantService.debugging();
-                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
+                //----
+                $scope.onlyview = true;
                 //---
                 $scope.id = $routeParams.id;
                 //---
-                $scope.objectService = objectService;
+                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
+                //---
+                $scope.status = null;
+                $scope.debugging = constantService.debugging();
                 //---
                 serverCallService.getOne($scope.ob, $scope.id).then(function (response) {
                     if (response.status == 200) {

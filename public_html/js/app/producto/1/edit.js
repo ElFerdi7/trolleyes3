@@ -28,8 +28,8 @@
 
 'use strict';
 moduloProducto.controller('ProductoEdit1Controller',
-        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
-            function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
+        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService',
+            function ($scope, $routeParams, $location, serverCallService, toolService, constantService) {
                 $scope.ob = "producto";
                 $scope.op = "edit";
                 $scope.profile = 1;
@@ -38,12 +38,7 @@ moduloProducto.controller('ProductoEdit1Controller',
                 $scope.debugging = constantService.debugging();
                 $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
                 //---
-                $scope.bean = {};
-                
-                //---
                 $scope.id = $routeParams.id;
-                //---
-                $scope.objectService = objectService;
                 //---
                 serverCallService.getOne($scope.ob, $scope.id).then(function (response) {
                     if (response.status == 200) {

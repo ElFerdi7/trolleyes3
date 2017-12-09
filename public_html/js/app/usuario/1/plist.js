@@ -27,14 +27,12 @@
  */
 'use strict';
 moduloUsuario.controller('UsuarioPList1Controller',
-        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
-            function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
+        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService',
+            function ($scope, $routeParams, $location, serverCallService, toolService, constantService) {
                 $scope.ob = "usuario";
                 $scope.op = "plist";
                 $scope.profile = 1;
                 //---
-                $scope.status = null;
-                $scope.debugging = constantService.debugging();
                 $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
                 //----
                 $scope.numpage = toolService.checkDefault(1, $routeParams.page);
@@ -44,7 +42,8 @@ moduloUsuario.controller('UsuarioPList1Controller',
                 $scope.orderParams = toolService.checkEmptyString($routeParams.order);
                 $scope.filterParams = toolService.checkEmptyString($routeParams.filter);
                 //---
-                $scope.objectService = objectService;                              
+                $scope.status = null;
+                $scope.debugging = constantService.debugging();
                 //---
                 function getDataFromServer() {
                     serverCallService.getCount($scope.ob, $scope.filterParams).then(function (response) {
@@ -74,8 +73,14 @@ moduloUsuario.controller('UsuarioPList1Controller',
                     $location.url($scope.url + '/' + $scope.numpage + '/' + $scope.rpp).search('filter', $scope.filterParams).search('order', orderField + ',' + ascDesc);
                     return false;
                 };
+                $scope.back = function () {
+                    window.history.back();
+                };
                 $scope.close = function () {
                     $location.path('/home');
+                };
+                $scope.setShowRemove = function (show) {
+                    $scope.showRemove = show;
                 };
                 getDataFromServer();
             }

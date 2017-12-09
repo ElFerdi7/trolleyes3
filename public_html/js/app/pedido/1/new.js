@@ -27,10 +27,10 @@
  */
 'use strict';
 
-moduloUsuario.controller('UsuarioNew1Controller',
+moduloPedido.controller('PedidoNew1Controller',
         ['$scope', '$routeParams', '$location', 'serverCallService', '$filter', '$uibModal', 'sessionService', '$route', 'toolService', 'constantService',
             function ($scope, $routeParams, $location, serverCallService, $filter, $uibModal, sessionService, $route, toolService, constantService) {
-                $scope.ob = "usuario";
+                $scope.ob = "pedido";
                 $scope.op = "new";
                 $scope.profile = 1;
                 //---
@@ -92,4 +92,3 @@ moduloUsuario.controller('UsuarioNew1Controller',
                 };
             }
         ]);
-

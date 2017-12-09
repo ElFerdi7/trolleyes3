@@ -27,19 +27,16 @@
  */
 'use strict';
 moduloPedido.controller('PedidoXusuarioPList1Controller',
-        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
-            function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
+        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService',
+            function ($scope, $routeParams, $location, serverCallService, toolService, constantService) {
                 $scope.ob = "pedido";
                 $scope.op = "plistX";
                 $scope.profile = 1;
-                //---
-                $scope.status = null;
-                $scope.debugging = constantService.debugging();
                 //----
                 $scope.xob = "usuario";
-                $scope.xid = $routeParams.id_usuario;
+                $scope.xid = $routeParams.id;
                 //----
-                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op + $scope.xob + '/' + $routeParams.id_usuario;
+                $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op + $scope.xob + '/' + $scope.xid;
                 //----
                 $scope.numpage = toolService.checkDefault(1, $routeParams.page);
                 $scope.rpp = toolService.checkDefault(10, $routeParams.rpp);
@@ -47,24 +44,23 @@ moduloPedido.controller('PedidoXusuarioPList1Controller',
                 //---
                 $scope.orderParams = toolService.checkEmptyString($routeParams.order);
                 $scope.filterParams = toolService.checkEmptyString($routeParams.filter);
-                //--
-                $scope.objectService = objectService;
+                //---
+                $scope.status = null;
+                $scope.debugging = constantService.debugging();
                 //---
                 function getDataFromServer() {
-//                    serverCallService.getOne($scope.xob, $scope.xid).then(function (response) {
-//                        if (response.status == 200) {
-//                            if (response.data.status == 200) {
-//                                $scope.status = null;
-//                                $scope.linkedbean = response.data.json;
-//                            } else {
-//                                $scope.status = "Error en la recepción de datos del servidor";
-//                            }
-//                        } else {
-//                            $scope.status = "Error en la recepción de datos del servidor";
-//                        }
-//                    }).catch(function (data) {
-//                        $scope.status = "Error en la recepción de datos del servidor";
-//                    });
+                    if ($scope.xob && $scope.xid) {
+                        $scope.linkedbean = null;
+                        serverCallService.getOne($scope.xob, $scope.xid).then(function (response) {
+                            if (response.status == 200) {
+                                if (response.data.status == 200) {
+                                    $scope.linkedbean = response.data.json;
+                                }
+                            }
+                        }).catch(function (data) {
+                        });
+                    }
+                    ;
                     serverCallService.getCountX($scope.ob, $scope.xob, $scope.xid, $scope.filterParams).then(function (response) {
                         if (response.status == 200) {
                             $scope.registers = response.data.json;
@@ -88,13 +84,19 @@ moduloPedido.controller('PedidoXusuarioPList1Controller',
                         $scope.status = "Error en la recepción de datos del servidor";
                     });
                 }
-
+                //---                
                 $scope.doorder = function (orderField, ascDesc) {
                     $location.url($scope.url + '/' + $scope.numpage + '/' + $scope.rpp).search('filter', $scope.filterParams).search('order', orderField + ',' + ascDesc);
                     return false;
                 };
+                $scope.back = function () {
+                    window.history.back();
+                };
                 $scope.close = function () {
                     $location.path('/home');
+                };
+                $scope.setShowRemove = function (show) {
+                    $scope.showRemove = show;
                 };
                 getDataFromServer();
             }

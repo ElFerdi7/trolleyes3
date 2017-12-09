@@ -28,8 +28,8 @@
 
 'use strict';
 moduloUsuario.controller('UsuarioEdit1Controller',
-        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService', 'objectService',
-            function ($scope, $routeParams, $location, serverCallService, toolService, constantService, objectService) {
+        ['$scope', '$routeParams', '$location', 'serverCallService', 'toolService', 'constantService',
+            function ($scope, $routeParams, $location, serverCallService, toolService, constantService) {
                 $scope.ob = "usuario";
                 $scope.op = "edit";
                 $scope.profile = 1;
@@ -38,12 +38,7 @@ moduloUsuario.controller('UsuarioEdit1Controller',
                 $scope.debugging = constantService.debugging();
                 $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
                 //---
-                $scope.bean = {};
-                $scope.bean.obj_tipousuario = {"id": 0};
-                //---
                 $scope.id = $routeParams.id;
-                //---
-                $scope.objectService = objectService;
                 //---
                 serverCallService.getOne($scope.ob, $scope.id).then(function (response) {
                     if (response.status == 200) {

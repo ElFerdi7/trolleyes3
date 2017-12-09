@@ -26,24 +26,29 @@
  * THE SOFTWARE.
  */
 'use strict';
-moduloPedido.controller('PedidoView1Controller',
+moduloUsuario.controller('UsuarioView1Controller',
         ['$scope', '$routeParams', 'serverCallService', '$location', 'sessionService', 'constantService',
             function ($scope, $routeParams, serverCallService, $location, sessionService, constantService) {
-                $scope.ob = "pedido";
+                $scope.ob = "usuario";
                 $scope.op = "view";
                 $scope.profile = 1;
                 //---
-                $scope.status = null;
-                $scope.debugging = constantService.debugging();
+                $scope.id = $routeParams.id;                
+                //---
                 $scope.url = $scope.ob + '/' + $scope.profile + '/' + $scope.op;
                 //---
-                $scope.id = $routeParams.id;
+                $scope.status = null;
+                $scope.debugging = constantService.debugging();
                 //---
                 serverCallService.getOne($scope.ob, $scope.id).then(function (response) {
                     if (response.status == 200) {
                         if (response.data.status == 200) {
                             $scope.status = null;
-                            $scope.bean = response.data.json;
+                            $scope.bean = response.data.json.data;
+                            $scope.metao = response.data.json.metaObject;
+                            $scope.metap = response.data.json.metaProperties;
+
+
                         } else {
                             $scope.status = "Error en la recepción de datos del servidor";
                         }
